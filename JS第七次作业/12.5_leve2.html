@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    fetch('http://anonym.ink:8000/homework/auth/login',{
+        method:"POST",
+        body:JSON.stringify({
+            username:'admin',
+            password:'root',
+        }),
+        headers:{
+            'content-type':'application/json'
+        },
+    }).then((res)=>{
+        return res.text();
+    }).then((data)=>{
+        console.log(data);
+    })
+
+    fetch('http://anonym.ink:8000/homework/auth/next_level',{
+        method:"GET",
+        headers:{
+            'Authorization':`BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTQ1MTQxOTgxMCIsIm5hbWUiOiLph47njaPlhYjovKkiLCJpYXQiOjExNDUxNDE5MTl9.rqxUm3Bajq5XcFsd0syJO9PWdc2JHFYqp9A1JboO8eo`
+        }
+    }).then((res)=>{
+        return res.text();
+    }).then((data)=>{
+        console.log(data);
+    })
+</script>
+</html>

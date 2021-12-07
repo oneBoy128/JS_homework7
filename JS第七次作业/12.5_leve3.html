@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    #lan
+    {
+        width: 1000px;
+        height: 900px;
+        margin: 0 auto;
+        background-color: pink;
+    }
+    .xiaoxi
+    {
+        width: 765px;
+        height: 90px;
+        background-color: rgb(192, 187, 231);
+        margin: 15px auto;
+        position: relative;
+        padding: 10px;
+        
+    }
+    #messge
+    {
+        width: 100%;
+        height: 190px;
+        border-bottom: 2px solid #6D7C8C;
+        background-color: white;
+        padding-bottom: 15px;
+    }
+    #messge p
+    {
+        width: 123px;
+        margin: 0 auto;
+    }
+    #xiaomessge
+    {
+        width: 670.8px;
+        height: 91px;
+        margin-left: 116px;
+    }
+    #messge button
+    {   
+        width: 72px;
+        height: 28px;
+        color: #FFFF;
+        position: relative;
+        top: -9px;
+        border: 1px solid #6D7C8C;
+        background-color: #6C7D8E;
+    }
+    .cen
+    {
+        left: 380px;
+        margin-top: 14px;
+    }
+    .shan
+    {
+        position: relative;
+        float: right;
+        left: 50px;
+        top: 78px;
+        text-decoration: none;
+    }
+</style>
+</head>
+<body>
+    <div id="lan">
+        <div id="messge">
+            <p>设置字体颜色</p>
+            <button id="red" class="cen">红色</button>
+            <button id="yellow" class="cen">黄色</button>
+            <button id="black" class="cen">黑色</button>
+            <textarea name="item" id="xiaomessge" cols="30" rows="10"></textarea>
+            <button id="btn">发送</button>
+            <button id='open'>连接</button>
+        </div>
+        <div class="xiaoxi">
+            
+            我是第一个留言哈哈哈哈
+            <a href='' class='shan'>删除</a>
+        </div>
+    </div>
+    <div id="test">
+        
+    </div>
+</body>
+<script>
+    function delA()//删除的超链接函数
+    {
+        let flag = confirm("删除？");
+        if(flag==true)
+        {
+            let xx = this.parentNode;
+             xx.parentNode.removeChild(xx);
+        }
+            return false;
+    }
+
+    window.onload = function()
+    {
+        let btn = document.getElementById("btn");//获取按钮对象
+        let cen = document.getElementsByClassName('cen');//获取字体按钮对象
+        let redBtn = document.getElementById("red");//获取按钮red对象
+        let yellowBtn = document.getElementById("yellow");//获取yellow
+        let blackBtn = document.getElementById("black");//获取black对象
+        let xiaoms = document.getElementById("xiaomessge");//获取文本对象
+        let lan = document.getElementById("lan");//获取栏对象
+        let shan = document.getElementsByClassName("shan");//获取删除的超链接
+        let test = document.getElementById('test');//获取历史纪录的模板
+        let open = document.getElementById('open');//获取连接按钮
+        let webs = null;
+        open.onclick = ()=>{//连接按钮按下后
+            webs = new WebSocket('ws://anonym.ink:8000/homework/chatroom?username=fcawckswqw');
+            webs.onopen = ()=>{
+                test.innerHTML += '<li>客户端已连接</li>';
+                alert("客户端已连接");
+            }
+            webs.onmessage = (evt)=>{
+                test.innerHTML += "<li>"+evt.data+'</li>';
+            }
+        }
+        redBtn.onclick =function()
+        {
+            xiaoms.style.color = 'red';
+        }
+        yellowBtn.onclick =function()
+        {
+            xiaoms.style.color = 'yellow';
+        }
+        blackBtn.onclick =function()
+        {
+            xiaoms.style.color = 'black';
+        }
+
+        for(let i = 0;i<cen.length;i++)
+        {
+                cen[i].onmousedown = function()
+                {  
+                    this.style.backgroundColor = "#37414b" 
+                }
+                cen[i].onmouseup = function()
+                {
+                    this.style.backgroundColor = "#6C7D8E";
+                }
+        }
+
+        btn.onmousedown = function()
+        {  
+           btn.style.backgroundColor = "#37414b" 
+        }
+
+        btn.onmouseup = function()
+        {
+            btn.style.backgroundColor = "#6C7D8E";
+            if(xiaoms.value=='')
+            {
+                alert("文本内容不能为空");
+            }
+            else
+            {   
+                if(webs)
+                {   
+                    webs.send(xiaoms.value);
+                    let newDiv = document.createElement("div");
+                    let Atext = document.createTextNode("删除");
+                    newDiv.classList.add("xiaoxi");
+                    newDiv.style.color = xiaoms.style.color;
+                    newDiv.innerHTML = xiaoms.value+"<a href='' class='shan'>删除</a>";
+                    let a = newDiv.getElementsByTagName("a")[0];
+                    a.onclick = delA;
+                    lan.appendChild(newDiv);
+                    xiaoms.value = '';
+                }
+                else{
+                    alert("请先连接网络");
+                }
+            }
+        }
+
+        shan[0].onclick = delA;
+    }
+</script>
+</html>

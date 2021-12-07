@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+</style>
+<body>
+    <input type="text" name="user" id='message'>
+    <button id='btn'>提交</button>
+    <div id="gr"></div>
+</body>
+<script>
+    let textV = document.getElementById('message');
+    let btn = document.getElementById('btn');
+    let gr = document.getElementById('gr');
+    let formdata= new FormData();
+    btn.onclick = function(){
+       formdata.append("message",textV.value);
+       fetch('http://anonym.ink:8000/homework/fufubot_test/',{
+        method:"POST",
+        body:formdata
+       }).then(response=>{
+           return response.text();
+       }).then(data=>{
+           gr.innerHTML = data;
+       })
+    }
+</script> 
+
+</html>
